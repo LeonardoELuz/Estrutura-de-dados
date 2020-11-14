@@ -31,7 +31,6 @@ typedef struct lista_playlists_no { //Nó para lista simples de playlist
 } Lista_playlists_no;
 
 //Funções
-
 void menu() {
     printf("\t***MENU***\n");
     printf("Informe uma opção:\n");
@@ -48,6 +47,7 @@ void insere_musica_na_lista(Lista_musicas lista) {//Insere a música criada na li
     Musica_no *novo_no = malloc(sizeof(Musica_no));
     novo_no->musica = malloc(sizeof(Musica));
 
+    system("cls");
     printf("ID: ");
     scanf("%d", &novo_no->musica->id);
     fflush(stdin);
@@ -57,7 +57,7 @@ void insere_musica_na_lista(Lista_musicas lista) {//Insere a música criada na li
     gets(novo_no->musica->artista);
     printf("Álbum: ");
     gets(novo_no->musica->album);
-    printf("Duração: ");
+    printf("Duração(em segundos): ");
     scanf("%d", &novo_no->musica->duracao);
 
     novo_no->prox = lista->prox;
@@ -66,8 +66,6 @@ void insere_musica_na_lista(Lista_musicas lista) {//Insere a música criada na li
         lista->prox->ant = novo_no;
     }
     lista->prox = novo_no;
-
-
 }
 
 void imprime_lista_de_musicas(Musica_no *no_cabeca) {
@@ -92,12 +90,9 @@ void imprime_lista_de_musicas(Musica_no *no_cabeca) {
         inicial = inicial->prox;
         }
         system("pause");
-
     }
-
 }
 //Principal
-
 int main(void) {
     setlocale(LC_ALL, "Portuguese");
 
@@ -120,6 +115,4 @@ int main(void) {
 
     }
     while (opcao != 5);
-
-
 }
