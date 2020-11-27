@@ -130,24 +130,40 @@ shuffle(Playlist_no ){ //          --------> OSSO <-------
 
 }
 
-remove_musica(int id){
-    Musica_no musica;
-    for dentro da lista geral{
-        se existe {
-            musica = ponteiro;
-            for playlists {
-                for dentro da playlist{
-                    se acha{
-                        exclue;
-                    }
-                }
-            }
-            tira da lista geral;
-            exclue total; (free(ponteiro da musica))
+remove_musica(int id, Lista_musicas musicas, Lplaylists_no playlists){
+    Musica *musica;
+    bool achado = false;
+    while (musica->prox != NULL && !achado){
+        if (musica->id == id){
+            musica = musicas->musica;
+            achado = true;
         } else {
-            print "ops! i did it again...";
+            musicas = musicas->prox;
         }
     }
+
+    if (achado){
+        Playlist_no *play_no = playlists;
+        while (play_no != NULL){
+            bool excluido;
+            Musica_no *no = play_no->musica;
+            do {
+                excluido = false;
+                if(no->musica->id == id){
+                    excluido = true;
+                    no->prox = no->ant;
+                } else {
+                    no = no->prox;
+                }
+            } while (no != NULL && !excluido);
+        }
+    
+        free(musica);
+
+    } else {
+        printf("Ops! Essa musica não existe no nosso repositório...");
+    }
+
 }
 
 //Principal -----------------------------------------------------------------------------------------------------------
