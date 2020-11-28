@@ -181,12 +181,11 @@ void imprime_lista_de_playlists(Lplaylists_no no_cabeca) {
 
             printf("Musicas:\n");
             Playlist_no *playlist = inicial->musicas->prox;
-            while(playlist) {
+            while(playlist->musica != NULL) {
                 printf("\tTitulo: %s\n", playlist->musica->titulo);
-                printf("----\n");
                 playlist = playlist->prox;
             }
-            printf("\t***");
+            printf("\t***\n");
 
             inicial = inicial->prox;
         }
