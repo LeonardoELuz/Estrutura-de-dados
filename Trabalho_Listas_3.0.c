@@ -111,7 +111,7 @@ Lplaylists_no cria_cabeca_lista_de_playlist() { //Cria uma cabeca de lista de pl
     return inicio;
 }
 
-Playlist_no *cria_cabeca_playlist (){ //Cria uma cabeça de playlist
+Playlist_no *cria_cabeca_playlist (){ //Cria uma cabeca de playlist
     Playlist_no *inicio = malloc(sizeof(Playlist_no));
     inicio->prox = inicio;
     return inicio;
@@ -139,9 +139,9 @@ void preenche_playlist(Lplaylists_no lista_de_playlist, Lista_musicas lista_de_m
     int nro_de_ids = 0;
     Playlist_no *nova_playlist = cria_cabeca_playlist(); //Cria playlist
 
-    //Pega os dados do usuário
+    //Pega os dados do usuario
     fflush(stdin);
-    printf("Informe os ID's das músicas que farão parte da playlist:\n");
+    printf("Informe os ID's das musicas que farao parte da playlist:\n");
     gets(entrada);
     id = strtok (entrada, " "); //Extrai o primeiro id
 
@@ -179,10 +179,11 @@ void imprime_lista_de_playlists(Lplaylists_no no_cabeca) {
             printf("ID: %d\n", inicial->id);
             printf("Nome da playlist: %s\n", inicial->nome);
 
-            printf("Músicas:\n");
+            printf("Musicas:\n");
             Playlist_no *playlist = inicial->musicas->prox;
             while(playlist) {
-                printf("\tTítulo: %s\n", playlist->musica->titulo);
+                printf("\tTitulo: %s\n", playlist->musica->titulo);
+                printf("----\n");
                 playlist = playlist->prox;
             }
             printf("\t***");
@@ -199,36 +200,36 @@ void shuffle(){
 
 remove_musica(int id, Lista_musicas musicas, Lplaylists_no playlists){
     Musica *musica;
-    bool achado = false;
-    while (musica->prox != NULL && !achado){
-        if (musica->id == id){
+    int achado = 0;
+    while (musicas->prox != NULL && achado == 0){
+        if (musicas->musica->id == id){
             musica = musicas->musica;
-            achado = true;
+            achado = 1;
         } else {
             musicas = musicas->prox;
         }
     }
 
-    if (achado){
+    if (achado == 1){
         Playlist_no *play_no = playlists;
         while (play_no != NULL){
-            bool excluido;
+            int excluido;
             Musica_no *no = play_no->musica;
             do {
-                excluido = false;
+                excluido = 0;
                 if(no->musica->id == id){
-                    excluido = true;
+                    excluido = 1;
                     no->prox = no->ant;
                 } else {
                     no = no->prox;
                 }
-            } while (no != NULL && !excluido);
+            } while (no != NULL && excluido == 0);
         }
 
         free(musica);
 
     } else {
-        printf("Ops! Essa musica não existe no nosso repositório...");
+        printf("Ops! Essa musica nao existe no nosso repositorio...");
     }
 
 }
