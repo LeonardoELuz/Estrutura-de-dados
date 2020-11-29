@@ -193,8 +193,69 @@ void imprime_lista_de_playlists(Lplaylists_no no_cabeca) {
     }
 }
 
-void shuffle(){
+void shuffle(Lplaylists_no playlists, Lista_musicas lista_musicas){
+    //recebe qual o id da playlist a ser embaralhada
+    printf("cls");
+    int id;
+    printf("Qual o id da playlist que deseja embaralhar?");
+    scanf("%d", &id);
+    fflush();
 
+    int achado = 0;
+    Lplaylists_no no;
+    int tamanho = 0;
+
+    //verifica se a playlist está cadastrada
+    while (playlists != NULL){
+        tamanho++;
+        if(playlists->id == id){
+           achado = 1;
+           no = playlists;
+       }
+    }
+    
+    //se cadastrada, embaralha
+    if(achado == 1){
+        //alocar os ponteiros das musicas em uma lista auxiliar
+        int ids[tamanho];
+        Playlist_no *playlist = no->musicas;
+
+        //apagando a playlist e salvando os ids das musicas
+        for (int i = 0; i < tamanho; i++){
+            ids[i] = playlist->musica->id;
+            Playlist_no *ant = playlist;
+            playlist = playlist->prox;
+            free(ant);
+        }
+
+        //randomizando a lista de ids
+        int rand_ids[tamanho];
+        for (int i = 0; i < tamanho; i++){
+            int rand = rand(rand(tamanho));
+            rand_ids[i] = ids[rand];
+            for(int j = rand; j < tamanho; j++){
+                ids[j] = ids[j + 1];
+            }
+            tamanho--;
+        }
+
+        Playlist_no *nova_playlist = cria_cabeca_playlist(); //Cria playlist
+        //preenche a playlist com os ids embaralhados
+        for(int indice = 0; indice < tamanho; indice++) {
+        Playlist_no *novo_no_playlist = malloc(sizeof(Playlist_no));
+        novo_no_playlist->musica = malloc(sizeof(Musica));
+        novo_no_playlist->musica = busca_musica(lista_musicas, rand_ids[indice]);
+        novo_no_playlist->prox = nova_playlist->prox;
+        nova_playlist->prox = novo_no_playlist;
+        }
+
+        insere_na_lista_de_playlist(playlists, nova_playlist);
+
+    } else {
+        printf("Ops! A playlist não existe em nosso repositório...");
+    }
+
+    system("pause");
 }
 
 remove_musica(int id, Lista_musicas musicas, Lplaylists_no playlists){
