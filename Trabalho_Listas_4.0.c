@@ -174,7 +174,7 @@ void imprime_lista_de_playlists(Lplaylists_no no_cabeca) {
     else{
         Lplaylists_no inicial = no_cabeca->prox;
 
-        while(inicial) {
+        while(inicial != NULL) {
             printf("ID: %d\n", inicial->id);
             printf("Nome da playlist: %s\n", inicial->nome);
 
@@ -264,9 +264,9 @@ void shuffle(Lplaylists_no playlists, Lista_musicas lista_musicas){
         //randomizando a lista de ids
         int rand_ids[tamanho];
         for (int i = 0; i < tamanho; i++){
-            int rand = rand(rand(tamanho));
-            rand_ids[i] = ids[rand];
-            for(int j = rand; j < tamanho; j++){
+            int rand_number = rand() % tamanho;
+            rand_ids[i] = ids[rand_number];
+            for(int j = rand_number; j < tamanho; j++){
                 ids[j] = ids[j + 1];
             }
             tamanho--;
@@ -300,16 +300,16 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
     printf("Informe o ID da música a ser apagada:\n");
     scanf("%d", &musica_id);
 
-    while(lista_de_playlists) {
+    while(lista_de_playlists != NULL) {
         Playlist_no *no_atual, *proximo_no;
         no_atual = lista_de_playlists->musicas;
         proximo_no = no_atual->prox;
 
-        while(proximo_no->musica && proximo_no->musica->id != musica_id) {
+        while(proximo_no->musica != NULL && proximo_no->musica->id != musica_id) {
             no_atual = proximo_no;
             proximo_no = proximo_no->prox;
         }
-        if(proximo_no->musica) {
+        if(proximo_no->musica != NULL) {
             no_atual->prox = proximo_no->prox;
             free(proximo_no);
         }
@@ -322,11 +322,11 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
     atual = musicas;
     proximo = atual->prox;
 
-    while(proximo && proximo->musica->id != musica_id) {
+    while(proximo != NULL && proximo->musica->id != musica_id) {
         atual = proximo;
         proximo = proximo->prox;
     }
-    if(proximo) {
+    if(proximo != NULL) {
         atual->prox = proximo->prox;
         free(proximo->musica);
         free(proximo);
@@ -375,7 +375,7 @@ int main(void) {
                 break;
             }
             case 6: {
-
+                shuffle(lista_playlists, lista_de_musicas);
                 break;
             }
             case 7: {
