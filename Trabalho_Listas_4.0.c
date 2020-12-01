@@ -31,14 +31,14 @@ typedef struct lplaylists_no { //No para lista simples de playlist
 } *Lplaylists_no;
 
 
-//--------------------------------FUNÇÕES -------------------------------
+//--------------------------------FUNï¿½ï¿½ES -------------------------------
 void menu() {
     printf("\t***MENU***\n");
     printf("Informe uma opcao:\n");
     printf("\t1 - Inserir musica\n\t2 - Listar musicas cadastradas\n\t3 - Criar playlist\n"
            "\t4 - Listar playlists\n\t5 - Listar uma playlist\n\t6 - Embaralha playlist\n\t7 - Remove uma musica\n");
 }
-    //*Lista geral de músicas*
+    //*Lista geral de mï¿½sicas*
 Musica_no *cria_lista_geral() { //Cria uma cabeca de lista geral
     Musica_no *inicio = malloc(sizeof(Musica_no));
     inicio->prox = NULL;
@@ -214,10 +214,10 @@ void imprime_uma_playlist(Lplaylists_no lista_de_playlists) {
             system("cls");
             printf("ID: %d\n", no_da_lista->id);
             printf("Nome da playlist: %s\n", no_da_lista->nome);
-            printf("Músicas:\n");
+            printf("Mï¿½sicas:\n");
             Playlist_no *playlist = no_da_lista->musicas->prox;
             while(playlist->musica != NULL) {
-                printf("\tTítulo: %s\n", playlist->musica->titulo);
+                printf("\tTï¿½tulo: %s\n", playlist->musica->titulo);
                 playlist = playlist->prox;
             }
         }
@@ -238,7 +238,7 @@ void shuffle(Lplaylists_no playlists, Lista_musicas lista_musicas){
     Lplaylists_no no;
     int tamanho = 0;
 
-    //verifica se a playlist está cadastrada
+    //verifica se a playlist estï¿½ cadastrada
     while (playlists != NULL){
         tamanho++;
         if(playlists->id == id){
@@ -285,7 +285,7 @@ void shuffle(Lplaylists_no playlists, Lista_musicas lista_musicas){
         insere_na_lista_de_playlist(playlists, nova_playlist);
 
     } else {
-        printf("Ops! A playlist não existe em nosso repositório...");
+        printf("Ops! A playlist nï¿½o existe em nosso repositï¿½rio...");
     }
 
     system("pause");
@@ -297,7 +297,7 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
     Lplaylists_no lista_de_playlists = playlists->prox;
 
     system("cls");
-    printf("Informe o ID da música a ser apagada:\n");
+    printf("Informe o ID da mï¿½sica a ser apagada:\n");
     scanf("%d", &musica_id);
 
     while(lista_de_playlists != NULL) {
@@ -317,7 +317,7 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
         lista_de_playlists = lista_de_playlists->prox;
     }
 
-    //remove da lista de músicas
+    //remove da lista de mï¿½sicas
     Musica_no *atual, *proximo;
     atual = musicas;
     proximo = atual->prox;
@@ -330,11 +330,11 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
         atual->prox = proximo->prox;
         free(proximo->musica);
         free(proximo);
-        printf("Música removida!\n");
+        printf("Mï¿½sica removida!\n");
         system("pause");
     }
     else {
-        printf("Música não cadastrada!");
+        printf("Mï¿½sica nï¿½o cadastrada!");
         system("pause");
     }
 }
