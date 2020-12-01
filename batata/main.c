@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include<time.h>
 
 //Structs -------------------------------------------------------------------------------------------------------------
 typedef struct musica {// Tipo de dado musica
@@ -35,8 +36,8 @@ typedef struct lplaylists_no { //No para lista simples de playlist
 void menu() {
     printf("\t***MENU***\n");
     printf("Informe uma opcao:\n");
-    printf("\t1 - Inserir musica\n\t2 - Listar musicas cadastradas\n\t3 - Criar playlist\n"
-           "\t4 - Listar playlists\n\t5 - Listar uma playlist\n\t6 - Embaralha playlist\n\t7 - Remove uma musica\n");
+    printf("\t1 - Inserir musica\n\t2 - Listar musicas cadastradas\n\t3 - Criar playlist\n\t4 - Listar playlists\n"
+           "\t5 - Listar uma playlist\n\t6 - Embaralha playlist\n\t7 - Remove uma musica\n\t8 - Sair |Apaga Tudo|\n");
 }
     //*Lista geral de m�sicas*
 Musica_no *cria_lista_geral() { //Cria uma cabeca de lista geral
@@ -81,16 +82,16 @@ void imprime_lista_de_musicas_geral(Musica_no *no_cabeca) {
     else {
         Musica_no *inicial = no_cabeca->prox;
 
-        while (inicial != NULL) {
-        printf("\tID: %d\n", inicial->musica->id);
-        printf("\tTitulo:  %s\n", inicial->musica->titulo);
-        printf("\tArtista: %s\n", inicial->musica->artista);
-        printf("\tAlbum: %s\n", inicial->musica->album);
-        printf("\tDuracao: %.2d:%.2d:%.2d\n", (inicial->musica->duracao / 3600), (inicial->musica->duracao % 3600 / 60),
+        while (inicial) {
+            printf("\tID: %d\n", inicial->musica->id);
+            printf("\tTitulo:  %s\n", inicial->musica->titulo);
+            printf("\tArtista: %s\n", inicial->musica->artista);
+            printf("\tAlbum: %s\n", inicial->musica->album);
+            printf("\tDuracao: %.2d:%.2d:%.2d\n", (inicial->musica->duracao / 3600), (inicial->musica->duracao % 3600 / 60),
             (inicial->musica->duracao % 3600 % 60));
-        printf("\t\t***\n");
+            printf("\t\t***\n");
 
-        inicial = inicial->prox;
+            inicial = inicial->prox;
         }
         system("pause");
     }
@@ -98,7 +99,7 @@ void imprime_lista_de_musicas_geral(Musica_no *no_cabeca) {
 
 Musica *busca_musica(Lista_musicas lista, int id_procurado) {
     Musica_no *procurado = lista->prox;
-    while (procurado != NULL && procurado->musica->id != id_procurado){
+    while (procurado && procurado->musica->id != id_procurado){
         procurado = procurado->prox;
     }
     return procurado->musica;
@@ -165,7 +166,6 @@ void preenche_playlist(Lplaylists_no lista_de_playlist, Lista_musicas lista_de_m
 
 void imprime_lista_de_playlists(Lplaylists_no no_cabeca) {
     system("cls");
-    int indice = 0;
     printf("\t***PLAYLISTS CADASTRADAS***\n");
 
     if(!no_cabeca->prox) {
@@ -193,9 +193,7 @@ void imprime_lista_de_playlists(Lplaylists_no no_cabeca) {
 
 void imprime_uma_playlist(Lplaylists_no lista_de_playlists) {
     system("cls");
-    int indice = 0;
     int id;
-    int encontrado = 0;
 
     fflush(stdin);
     if(!lista_de_playlists->prox){
@@ -206,18 +204,18 @@ void imprime_uma_playlist(Lplaylists_no lista_de_playlists) {
         printf("Informe o ID da playlist:\n");
         scanf("%d", &id);
 
-        while(no_da_lista != NULL && no_da_lista->id != id){
+        while(no_da_lista && no_da_lista->id != id){
             no_da_lista = no_da_lista->prox;
         }
 
-        if (no_da_lista != NULL) {
+        if (no_da_lista) {
             system("cls");
             printf("ID: %d\n", no_da_lista->id);
             printf("Nome da playlist: %s\n", no_da_lista->nome);
-            printf("M�sicas:\n");
+            printf("Musicas:\n");
             Playlist_no *playlist = no_da_lista->musicas->prox;
             while(playlist->musica != NULL) {
-                printf("\tT�tulo: %s\n", playlist->musica->titulo);
+                printf("\tTitulo: %s\n", playlist->musica->titulo);
                 playlist = playlist->prox;
             }
         }
@@ -228,78 +226,62 @@ void imprime_uma_playlist(Lplaylists_no lista_de_playlists) {
 
 void shuffle(Lplaylists_no playlists, Lista_musicas lista_musicas){
     //recebe qual o id da playlist a ser embaralhada
-    system("cls");
     int id;
-    printf("Qual o id da playlist que deseja embaralhar?");
-    scanf("%d", &id);
+    int indice = 0;
+    int lista_de_ids[50];
+   
     fflush(stdin);
-
-    int achado = 0;
-    Playlist_no *no;
-
-    //verifica se a playlist est� cadastrada
-    printf("batata");
-    while (playlists != NULL && achado == 0){
-        printf("cenoura");
-        if(playlists->id == id){
-           achado = 1;
-           no = playlists->musicas;
-       }
-        playlists = playlists->prox;
+    if(!playlists->prox){
+        printf("Nenhuma playlist cadastrada!");
     }
-    printf("beterraba");
-    printf("%d", no->musica->id);
-    printf("%s", playlists->nome);
+    else {
 
-    if (achado){
-       //Verificar quantas musicas tem a playlist
-        int tamanho = 0;
-        Playlist_no *cabeca = &no;
+        Lplaylists_no no_da_lista = playlists->prox;
+        system("cls");
+        printf("Informe o ID da playlist:\n");
+        scanf("%d", &id);
 
-        while(cabeca != NULL){
-            tamanho++;
+        while(no_da_lista != NULL && no_da_lista->id != id){//Procura pelo id na lista de playlists
+            no_da_lista = no_da_lista->prox;
         }
 
-        int ids[tamanho];
-        Playlist_no *playlist = no->musica;
-
-        //apagando a playlist e salvando os ids das musicas
-        for (int i = 0; i < tamanho; i++){
-            ids[i] = playlist->musica->id;
-            Playlist_no *ant = playlist;
-            playlist = playlist->prox;
-            free(ant);
-        }
-
-        //randomizando a lista de ids
-        int rand_ids[tamanho];
-        for (int i = 0; i < tamanho; i++){
-            int rand_number = rand() % tamanho;
-            rand_ids[i] = ids[rand_number];
-            for(int j = rand_number; j < tamanho; j++){
-                ids[j] = ids[j + 1];
+        if (no_da_lista != NULL) {// Se o n� existir, mapeia os ids de suas m�sicas e os coloca numa lista
+            Playlist_no *playlist = no_da_lista->musicas->prox;
+            Playlist_no *playlist_reserva = &playlist; //no reserva para manipula��o futura
+            while(playlist->musica != NULL) {
+                lista_de_ids[indice++] = playlist->musica->id;
+                playlist = playlist->prox;
             }
-            tamanho--;
-        }
 
-        Playlist_no *nova_playlist = cria_cabeca_playlist(); //Cria playlist
-        //preenche a playlist com os ids embaralhados
-        for(int indice = 0; indice < tamanho; indice++) {
-        Playlist_no *novo_no_playlist = malloc(sizeof(Playlist_no));
-        novo_no_playlist->musica = malloc(sizeof(Musica));
-        novo_no_playlist->musica = busca_musica(lista_musicas, rand_ids[indice]);
-        novo_no_playlist->prox = nova_playlist->prox;
-        nova_playlist->prox = novo_no_playlist;
-        }
+            //****Substitui as m�sicas****
 
-        insere_na_lista_de_playlist(playlists, nova_playlist);
-    } else {
-        printf("Ops! Tem isso aqui não...");
+            while (playlist_reserva->musica != NULL) {//Para cada n� da playlist...
+
+                int id_aleatorio;
+                int indice_aleatorio = rand() % indice; //um dos �ndices � escolhido de forma aleat�ria
+                id_aleatorio = lista_de_ids[indice_aleatorio]; //Um elemento aleat�rio � escolhido da lista de ids
+                Musica *musica;
+                Musica_no *musicas = lista_musicas->prox;
+
+                while(musicas != NULL && (musicas->musica->id != id_aleatorio)) {//O elemento � procurado na lista geral de m�sicas cadastradas
+                    musicas = musicas->prox;
+                }
+                playlist_reserva->musica = musicas->musica; // A nova m�sica � atribuida ao n� da playlist
+                
+
+                //remove o id j� selecionado da lista
+                for(int i = indice_aleatorio; i < indice; i++) {
+                     lista_de_ids[i] = lista_de_ids[i + 1];
+                }
+                indice--;
+
+                playlist_reserva = playlist_reserva->prox;
+            }
+
+        printf("Playlist embaralhada!\n");
+        system("pause");
+        }
     }
-
-
-
-    system("pause");
 }
 
 void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
@@ -307,7 +289,7 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
     Lplaylists_no lista_de_playlists = playlists->prox;
 
     system("cls");
-    printf("Informe o ID da m�sica a ser apagada:\n");
+    printf("Informe o ID da musica a ser apagada:\n");
     scanf("%d", &musica_id);
 
     while(lista_de_playlists != NULL) {
@@ -327,7 +309,7 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
         lista_de_playlists = lista_de_playlists->prox;
     }
 
-    //remove da lista de m�sicas
+    //remove da lista de musicas
     Musica_no *atual, *proximo;
     atual = musicas;
     proximo = atual->prox;
@@ -340,11 +322,11 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
         atual->prox = proximo->prox;
         free(proximo->musica);
         free(proximo);
-        printf("M�sica removida!\n");
+        printf("Musica removida!\n");
         system("pause");
     }
     else {
-        printf("M�sica n�o cadastrada!");
+        printf("Musica nao cadastrada!");
         system("pause");
     }
 }
@@ -352,6 +334,7 @@ void remove_musica(Lista_musicas musicas, Lplaylists_no playlists) {
 //--------------------------------PRINCIPAL --------------------------------------
 int main(void) {
     setlocale(LC_ALL, "Portuguese");
+    srand(time(0));
 
     Lista_musicas lista_de_musicas = cria_lista_geral();
     Lplaylists_no lista_playlists = cria_cabeca_lista_de_playlist();
@@ -392,8 +375,29 @@ int main(void) {
                 remove_musica(lista_de_musicas, lista_playlists);
                 break;
             }
+            case 8:{
+                while (lista_playlists != NULL){
+                    while (lista_playlists->musicas != NULL){
+                        Playlist_no *musica = lista_playlists->musicas;
+                        lista_playlists = lista_playlists->prox;
+                        free(musica);
+                    }
+                    Lplaylists_no *playlist = lista_playlists;
+                    lista_playlists = lista_playlists->prox;
+                    free(playlist);
+                }
+                free(lista_playlists);
+                
+                while(lista_de_musicas->musica != NULL){
+                    free(lista_de_musicas->musica);
+                    lista_de_musicas = lista_de_musicas->prox;
+                    free(lista_de_musicas->ant);
+                }
+                free(lista_de_musicas);
+                break;
+            }
         }
 
     }
-    while (opcao != 8);
+    while (opcao != 9);
 }

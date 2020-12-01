@@ -1,7 +1,8 @@
 # depslib dependency file v1.0
-1606706672 source:c:\users\kaelb\documents\c_codes\estrutura-de-dados\batata\main.c
+1606852423 source:c:\users\kaelb\documents\c_codes\estrutura-de-dados\batata\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<locale.h>
+	<time.h>
 
